@@ -1,11 +1,13 @@
-
+import Layout from './components/Layout'
 
 function App() {
 
-  return (
-    <>
+  const isAuthenticated = false
 
-    </>
+  return (
+    <Layout>
+      <Hero />
+    </Layout>
   )
 }
 
