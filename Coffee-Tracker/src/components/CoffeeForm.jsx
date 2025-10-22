@@ -3,7 +3,9 @@ import { useState } from 'react'
 
 export default function CoffeeForm() {
   const [selectedCoffee, setSelectedCoffee] = useState(null)
-  const [showCoffeeType, setShowCoffeeType] = useState(false)
+  const [showCoffeeTypes, setShowCoffeeTypes] = useState(false)
+  const [coffeeCost, setCoffeeCost]=useState(0)
+  
 
   
   return (
@@ -17,14 +19,27 @@ export default function CoffeeForm() {
         {
           coffeeOptions.slice(0, 5).map((option, optionIndex) => {
             return (
-              <button onClick={() => setSelectedCoffee(option.name)} className={'button-card ' + (option.name === selectedCoffee ? 'coffee-button-selected' : '')} key={optionIndex}>
+              <button 
+                onClick={() => {
+                  setSelectedCoffee(option.name)
+                  setShowCoffeeTypes(false)
+                }} 
+                className={'button-card ' + (option.name === selectedCoffee ? 'coffee-button-selected' : '')} 
+                key={optionIndex}
+              >
                 <h4>{option.name}</h4>
                 <p>{option.caffeine} mg</p>
               </button>
             )
           })
         }
-        <button onClick={() => setShowCoffeeType(true)} className='button-card'>
+        <button 
+          onClick={() => {setShowCoffeeTypes(true)
+            setSelectedCoffee(null)
+          }}
+        
+          className={'button-card ' + (showCoffeeTypes ? 'coffee-button-selected' : ' ')}
+        >
           <h4>
             Other
           </h4>
@@ -33,7 +48,9 @@ export default function CoffeeForm() {
           </p>
         </button>
       </div>
-      <select id='coffee-list' name='coffee-list'>
+      {
+      showCoffeeTypes && (
+        <select onChange={(e) => setSelectedCoffee(e.target.value)} id='coffee-list' name='coffee-list'>
         <option value={null}>Select type</option>
         {coffeeOptions.map((option, optionIndex) => {
           return (
@@ -44,9 +61,10 @@ export default function CoffeeForm() {
           )
         })}
 
-      </select>
+      </select>)}
       <h4>Add the cost ($)</h4>
-      <input className='w-full' type='number' placeholder='4.5' />
+      <input className='w-full' type='number' value={coffeeCost}
+        onChange={(e) => setCoffeeCost(e.target.value)} placeholder='4.5' />
       <h4>Time since consumption</h4>
       <div className='time-entry'>
         <div>
