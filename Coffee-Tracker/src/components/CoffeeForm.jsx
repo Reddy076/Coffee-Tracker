@@ -9,6 +9,11 @@ export default function CoffeeForm() {
   const [min,setMin]=useState(0)
 
 
+  function handleCoffeeChange(e) {
+    console.log(selectedCoffee,coffeeCost,hour,min)
+  }
+
+
   
   return (
     <>
@@ -74,7 +79,7 @@ export default function CoffeeForm() {
             Hours
           </h6>
           <select onChange={(e) => setHour(e.target.value)} id='hours-select'>
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23].map((hour, hourIndex) => {
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23].map((hour, hourIndex) => {
               return <option key={hourIndex} value={hour}>{hour}</option>
             })}
           </select>
@@ -84,13 +89,13 @@ export default function CoffeeForm() {
             Mins
           </h6>
           <select onChange={(e) => setMin(e.target.value)} id='mins-select'>
-            {[0, 5, 10, 15, 20, 25, 30, 35, 40, 45].map((min, minIndex) => {
+            {[5, 10, 15, 20, 25, 30, 35, 40, 45].map((min, minIndex) => {
               return <option key={minIndex} value={min}>{min}</option>
             })}
           </select>
         </div>
       </div>
-      <button>
+      <button onClick={handleCoffeeChange}>
         <p>Add Entry</p>
       </button>
     </>
