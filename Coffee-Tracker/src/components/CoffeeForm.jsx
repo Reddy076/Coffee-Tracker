@@ -40,6 +40,8 @@ export default function CoffeeForm() {
 })}
 
       </select>
+      <h4>Add the cost ($)</h4>
+      <input ></input>
     </>
   )
 }
