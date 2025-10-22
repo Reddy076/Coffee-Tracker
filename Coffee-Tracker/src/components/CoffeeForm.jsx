@@ -2,6 +2,7 @@ import { coffeeOptions } from '../utils'
 import { useState } from 'react'
 
 export default function CoffeeForm() {
+  const [selectedCoffee, setSelectedCoffee] = useState(null)
   const [showCoffeeType, setShowCoffeeType] = useState(false)
 
   
@@ -16,7 +17,7 @@ export default function CoffeeForm() {
         {
           coffeeOptions.slice(0, 5).map((option, optionIndex) => {
             return (
-              <button className='button-card' key={optionIndex}>
+              <button onClick={() => setSelectedCoffee(option.name)} className={'button-card ' + (option.name === selectedCoffee ? 'coffee-button-selected' : '')} key={optionIndex}>
                 <h4>{option.name}</h4>
                 <p>{option.caffeine} mg</p>
               </button>
