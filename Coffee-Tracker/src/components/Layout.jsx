@@ -1,6 +1,9 @@
-import React from 'react'
+import { useState } from 'react'
+import Modal from './Modal'
+import Authentication from './Authentication'
 
 export default function Layout({ children }) {
+  const [showModal, setShowModal] = useState(false)
   const header=(
     <header>
       <div>
@@ -11,7 +14,7 @@ export default function Layout({ children }) {
           For coffee Insatiates
         </p>
       </div>
-      <button>
+      <button onClick={() => setShowModal(true)}>
         <p>
           Sign Up free
         </p>
@@ -29,6 +32,9 @@ export default function Layout({ children }) {
   
   return (
     <>
+    {showModal && (<Modal handleCloseModal={() => setShowModal(false)}>
+      <Authentication />
+    </Modal>)}
       {header}
       <main>
         {children}
