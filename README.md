@@ -2,6 +2,8 @@
 
 Caffiend is a React-based web application that helps coffee enthusiasts track their caffeine intake, monitor consumption patterns, and manage their coffee habits. Built with Firebase authentication and Firestore for data persistence.
 
+**Live Demo**: [https://coffee-tracker-psi.vercel.app/](https://coffee-tracker-psi.vercel.app/)
+
 ## Table of Contents
 
 - [Features](#features)
