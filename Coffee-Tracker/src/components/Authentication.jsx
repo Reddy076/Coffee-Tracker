@@ -1,9 +1,16 @@
-import React from 'react'
 
 export default function Authentication() {
   return (
-    <div>
-      
+    <>
+    <h2 className='sign-up-text'>Sign up / Login</h2>
+    <p placeholder='Email'>Email</p>
+    <input placeholder='************' type="password" />
+    <button><p>Submit</p></button>
+    <hr/>
+    <div className='register-content'>
+      <p>Don&apos;t have an account?</p>
+      <button><p>Sign up</p></button>
     </div>
+    </>
   )
 }
