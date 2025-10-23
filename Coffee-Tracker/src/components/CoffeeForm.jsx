@@ -11,12 +11,24 @@ export default function CoffeeForm({isAuthenticated}) {
   const [hour,setHour]=useState(0)
   const [min,setMin]=useState(0)
 
+  const {globalData}=useAuth()
+
 
   function handleSubmitForm() {
     if(!isAuthenticated){
       setShowModal(true)
       return
     }
+
+    if (!selectedCoffee) { return }
+    const newGlobalData={...(globalData) || {}}
+
+    const nowTime= Date.now()
+
+    const timeToSubstract= (hour*60*60*1000) + (min*60*1000)
+
+    const timeStamp= nowTime-timeToSubstract
+
     console.log(selectedCoffee,coffeeCost,hour,min)
   }
 
