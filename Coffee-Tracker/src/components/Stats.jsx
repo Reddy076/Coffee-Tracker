@@ -1,4 +1,4 @@
-import { calculateCurrentCaffeineLevel , coffeeConsumptionHistory , statusLevels } from "../utils"
+import { calculateCurrentCaffeineLevel , coffeeConsumptionHistory , statusLevels , calculateCoffeeStats, getTopThreeCoffees} from "../utils"
 
 function StatCard({lg,title,children}) { 
 
@@ -15,13 +15,8 @@ function StatCard({lg,title,children}) {
 
 
 export default function Stats() {
-  const stats={
-    daily_caffeine: 240,
-    daily_cost: 6.8,
-    average_caffeine: 2.3,
-    total_cost: 220
-  }
-
+  const stats=
+  calculateCoffeeStats(coffeeConsumptionHistory)
 
   const caffeineLevel=calculateCurrentCaffeineLevel(coffeeConsumptionHistory)
 
@@ -48,7 +43,7 @@ export default function Stats() {
           <p><span className="stat-text">{stats.daily_caffeine}</span>mg</p>
         </StatCard>
         <StatCard title='Average # of Coffees'>
-          <p><span className="stat-text">{stats.average_caffeine}</span>mg</p>
+          <p><span className="stat-text">{stats.average_coffees}</span></p>
         </StatCard>
         <StatCard title = 'Daily Cost ($)'>
           <p>$ <span className="stat-text">{stats.daily_cost}</span></p>
@@ -56,7 +51,31 @@ export default function Stats() {
         <StatCard title = 'Total Cost ($)'>
           <p>$ <span className="stat-text">{stats.total_cost}</span></p>
         </StatCard>
+        <table className="stat-table">
+          <thead>
+          <tr>
+            <th>Coffee Name</th>
+            <th>Number of Purchase</th>
+            <th>Percentage of Total</th>
+          </tr>
+          </thead>
+          <tbody>
+            {
+              getTopThreeCoffees(coffeeConsumptionHistory).map((coffee,coffeeIndex)=>{
+                return(
+                  <tr key={coffeeIndex}>
+                    <td>{coffee.coffeeName}</td>
+                    <td>{coffee.count}</td>
+                    <td>{coffee.percentage}</td>
+                  </tr>
+
+                )
+              })
+            }
+          </tbody>
+        </table>
     </div>
+
     </>
   )
 }
