@@ -2,45 +2,80 @@ import { coffeeOptions } from '../utils'
 import { useState } from 'react'
 import Modal from './Modal'
 import Authentication from './Authentication'
+import { doc, setDoc } from 'firebase/firestore'
 
-export default function CoffeeForm({isAuthenticated}) {
+import { useAuth } from '../context/AuthContext'
+
+import { db } from '../../firebase'
+
+
+export default function CoffeeForm({ isAuthenticated }) {
   const [showModal, setShowModal] = useState(false)
   const [selectedCoffee, setSelectedCoffee] = useState(null)
   const [showCoffeeTypes, setShowCoffeeTypes] = useState(false)
-  const [coffeeCost, setCoffeeCost]=useState(0)
-  const [hour,setHour]=useState(0)
-  const [min,setMin]=useState(0)
+  const [coffeeCost, setCoffeeCost] = useState(0)
+  const [hour, setHour] = useState(0)
+  const [min, setMin] = useState(0)
 
-  const {globalData}=useAuth()
+  const { globalData, setGlobalData, globalUser } = useAuth()
 
 
-  function handleSubmitForm() {
-    if(!isAuthenticated){
+  async function handleSubmitForm() {
+    if (!isAuthenticated) {
       setShowModal(true)
       return
     }
-
     if (!selectedCoffee) { return }
-    const newGlobalData={...(globalData) || {}}
 
-    const nowTime= Date.now()
+    try {
+      const newGlobalData = { ...(globalData) || {} }
 
-    const timeToSubstract= (hour*60*60*1000) + (min*60*1000)
+      const nowTime = Date.now()
 
-    const timeStamp= nowTime-timeToSubstract
+      const timeToSubstract = (hour * 60 * 60 * 1000) + (min * 60 * 1000)
 
-    console.log(selectedCoffee,coffeeCost,hour,min)
+      const timeStamp = nowTime - timeToSubstract
+
+      const newData = {
+        name: selectedCoffee,
+        cost: coffeeCost
+      }
+
+      newGlobalData[timeStamp] = newData
+
+
+
+      //console.log(timeStamp, selectedCoffee, coffeeCost)
+
+      setGlobalData(newGlobalData)
+
+      const userRef = doc(db, "users", globalUser.uid)
+      const res = await setDoc(userRef, {
+
+        [timeStamp]: newData
+
+      }, { merge: true })
+
+      setSelectedCoffee(null)
+      setHour(0)
+      setMin(0)
+      setCoffeeCost(0)
+
+    }
+    catch (err) {
+      console.log(err.message)
+    }
   }
 
   function handleCloseModal() {
     setShowModal(false)
   }
-  
+
   return (
     <>
-    {showModal && (<Modal handleCloseModal={handleCloseModal}>
-          <Authentication  handleCloseModal={handleCloseModal}/>
-        </Modal>)}
+      {showModal && (<Modal handleCloseModal={handleCloseModal}>
+        <Authentication handleCloseModal={handleCloseModal} />
+      </Modal>)}
 
       <div className="section-header">
         <i className="fa-solid fa-pencil" />
@@ -51,12 +86,12 @@ export default function CoffeeForm({isAuthenticated}) {
         {
           coffeeOptions.slice(0, 5).map((option, optionIndex) => {
             return (
-              <button 
+              <button
                 onClick={() => {
                   setSelectedCoffee(option.name)
                   setShowCoffeeTypes(false)
-                }} 
-                className={'button-card ' + (option.name === selectedCoffee ? 'coffee-button-selected' : '')} 
+                }}
+                className={'button-card ' + (option.name === selectedCoffee ? 'coffee-button-selected' : '')}
                 key={optionIndex}
               >
                 <h4>{option.name}</h4>
@@ -65,11 +100,12 @@ export default function CoffeeForm({isAuthenticated}) {
             )
           })
         }
-        <button 
-          onClick={() => {setShowCoffeeTypes(true)
+        <button
+          onClick={() => {
+            setShowCoffeeTypes(true)
             setSelectedCoffee(null)
           }}
-        
+
           className={'button-card ' + (showCoffeeTypes ? 'coffee-button-selected' : ' ')}
         >
           <h4>
@@ -81,19 +117,19 @@ export default function CoffeeForm({isAuthenticated}) {
         </button>
       </div>
       {
-      showCoffeeTypes && (
-        <select onChange={(e) => setSelectedCoffee(e.target.value)} id='coffee-list' name='coffee-list'>
-        <option value={null}>Select type</option>
-        {coffeeOptions.map((option, optionIndex) => {
-          return (
-            <option key={optionIndex} value={option.name}>
-              {option.name} ({option.caffeine}mg)
-            </option>
+        showCoffeeTypes && (
+          <select onChange={(e) => setSelectedCoffee(e.target.value)} id='coffee-list' name='coffee-list'>
+            <option value={null}>Select type</option>
+            {coffeeOptions.map((option, optionIndex) => {
+              return (
+                <option key={optionIndex} value={option.name}>
+                  {option.name} ({option.caffeine}mg)
+                </option>
 
-          )
-        })}
+              )
+            })}
 
-      </select>)}
+          </select>)}
       <h4>Add the cost ($)</h4>
       <input className='w-full' type='number' value={coffeeCost}
         onChange={(e) => setCoffeeCost(e.target.value)} placeholder='4.5' />
