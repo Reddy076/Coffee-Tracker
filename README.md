@@ -9,7 +9,6 @@ Caffiend is a React-based web application that helps coffee enthusiasts track th
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Firebase Configuration](#firebase-configuration)
-- [Environment Variables](#environment-variables)
 - [Project Structure](#project-structure)
 - [Available Scripts](#available-scripts)
 - [Components](#components)
@@ -77,19 +76,6 @@ This application uses Firebase for authentication and data storage. You'll need 
 2. Enable Authentication (Email/Password method)
 3. Create a Firestore database
 4. Copy your Firebase configuration details
-
-## Environment Variables
-
-Create a `.env` file in the root directory with your Firebase configuration:
-
-```env
-VITE_FIREBASE_APIKEY=your_api_key
-VITE_FIREBASE_AUTHDOMAIN=your_auth_domain
-VITE_FIREBASE_PROJECTID=your_project_id
-VITE_FIREBASE_STORAGEBUCKET=your_storage_bucket
-VITE_FIREBASE_MESSAGINGSENDERID=your_messaging_sender_id
-VITE_FIREBASE_APPID=your_app_id
-```
 
 ## Project Structure
 
