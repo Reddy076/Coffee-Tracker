@@ -41,10 +41,14 @@ export default function Layout({ children }) {
     </footer>
   )
 
+  function handleCloseModal() {
+    setShowModal(false)
+  }
+
   return (
     <>
-      {showModal && (<Modal handleCloseModal={() => setShowModal(false)}>
-        <Authentication handleCloseModal={() => setShowModal(false)} />
+      {showModal && (<Modal handleCloseModal={handleCloseModal}>
+        <Authentication handleCloseModal={handleCloseModal} />
       </Modal>)}
       {header}
       <main>
